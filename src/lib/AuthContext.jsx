@@ -21,6 +21,15 @@ export const AuthProvider = ({ children }) => {
     try {
       setIsLoadingPublicSettings(true);
       setAuthError(null);
+
+      // Standalone deployment (no Base44 app id): no platform auth backend —
+      // run as a public app without the settings/auth network calls.
+      if (!appParams.appId) {
+        setIsLoadingPublicSettings(false);
+        setIsLoadingAuth(false);
+        setAuthChecked(true);
+        return;
+      }
       
       try {
         const publicSettings = await base44.app.getPublicSettings();

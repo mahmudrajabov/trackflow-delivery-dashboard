@@ -69,6 +69,13 @@ export default function Couriers() {
         </Button>
       </div>
 
+      {couriers.length === 0 && (
+        <div className="rounded-2xl border border-dashed border-slate-200 bg-white px-6 py-16 text-center">
+          <p className="text-sm font-medium text-slate-900">No couriers yet</p>
+          <p className="mt-1 text-sm text-slate-500">Add your first courier to start dispatching orders.</p>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {couriers.map((c) => {
           const initials = c.name

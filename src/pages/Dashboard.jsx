@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { orders } from "@/lib/mockDb";
+import { orders as ordersStore } from "@/lib/mockDb";
 import { format, subDays } from "date-fns";
 import {
   AreaChart,
@@ -27,7 +27,7 @@ export default function Dashboard() {
   const [orders, setOrders] = useState(null);
 
   useEffect(() => {
-    orders.list("-created_date", 300).then(setOrders);
+    ordersStore.list("-created_date", 300).then(setOrders);
   }, []);
 
   if (!orders) return <Spinner />;

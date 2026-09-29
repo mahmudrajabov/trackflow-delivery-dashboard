@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { orders, couriers as couriersStore } from "@/lib/mockDb";
+import { orders as ordersStore, couriers as couriersStore } from "@/lib/mockDb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -44,7 +44,7 @@ export default function Orders() {
 
   const load = async () => {
     const [o, c] = await Promise.all([
-      orders.list("-created_date", 300),
+      ordersStore.list("-created_date", 300),
       couriersStore.list("-created_date", 50),
     ]);
     setOrders(o);
@@ -61,7 +61,11 @@ export default function Orders() {
     const q = search.trim().toLowerCase();
     const matchQ =
       !q ||
-      [o.order_number, o.customer_name, o.courier_name].join(" ").toLowerCase().includes(q);
+      [o.order_number, o.customer_name, o.courier_name]
+        .map((f) => f || "")
+        .join(" ")
+        .toLowerCase()
+        .includes(q);
     const matchS = status === "all" || o.status === status;
     return matchQ && matchS;
   });
@@ -69,7 +73,7 @@ export default function Orders() {
   const doDelete = async () => {
     setBusy(true);
     try {
-      await orders.delete(deleting.id);
+      await ordersStore.delete(deleting.id);
       toast({ title: "Order deleted", description: `${deleting.order_number} was removed.` });
       setDeleting(null);
       await load();
