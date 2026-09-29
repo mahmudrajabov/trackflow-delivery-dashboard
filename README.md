@@ -4,6 +4,10 @@ A modern, responsive delivery-tracking dashboard built with React + Vite + Tailw
 Fully standalone: demo data (orders & couriers) is seeded into `localStorage` on first run —
 no backend or external service is required.
 
+## Live Demo
+
+[Open the live website](https://mahmud-track.netlify.app/)
+
 ## Pages
 
 | Route           | Page          | Features                                                                 |
