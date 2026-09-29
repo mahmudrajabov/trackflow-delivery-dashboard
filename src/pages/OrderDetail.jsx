@@ -78,9 +78,13 @@ export default function OrderDetail() {
   }
 
   const changeStatus = async (value) => {
-    await orders.update(order.id, { status: value });
-    setOrder((o) => ({ ...o, status: value }));
-    toast({ title: "Status updated", description: `${order.order_number} → ${value.replace("_", " ")}` });
+    try {
+      await orders.update(order.id, { status: value });
+      setOrder((o) => ({ ...o, status: value }));
+      toast({ title: "Status updated", description: `${order.order_number} → ${value.replace("_", " ")}` });
+    } catch (err) {
+      toast({ title: "Could not update status", description: "Please try again.", variant: "destructive" });
+    }
   };
 
   const doDelete = async () => {
@@ -89,6 +93,8 @@ export default function OrderDetail() {
       await orders.delete(order.id);
       toast({ title: "Order deleted" });
       navigate("/orders");
+    } catch (err) {
+      toast({ title: "Could not delete order", description: "Please try again.", variant: "destructive" });
     } finally {
       setBusy(false);
     }

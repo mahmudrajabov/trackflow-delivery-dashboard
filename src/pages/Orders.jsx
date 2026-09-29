@@ -77,6 +77,8 @@ export default function Orders() {
       toast({ title: "Order deleted", description: `${deleting.order_number} was removed.` });
       setDeleting(null);
       await load();
+    } catch (err) {
+      toast({ title: "Could not delete order", description: "Please try again.", variant: "destructive" });
     } finally {
       setBusy(false);
     }
@@ -184,8 +186,24 @@ export default function Orders() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-5 py-12 text-center text-slate-400">
-                    No orders match your search.
+                  <td colSpan={7} className="px-5 py-16 text-center">
+                    {orders.length === 0 ? (
+                      <div className="flex flex-col items-center gap-3">
+                        <p className="text-sm font-medium text-slate-900">No orders yet</p>
+                        <p className="text-sm text-slate-500">
+                          Create your first order to start tracking deliveries.
+                        </p>
+                        <Button
+                          onClick={() => setFormOpen(true)}
+                          className="mt-1 bg-blue-600 hover:bg-blue-700"
+                        >
+                          <Plus className="mr-2 h-4 w-4" />
+                          Create order
+                        </Button>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-slate-400">No orders match your search.</p>
+                    )}
                   </td>
                 </tr>
               )}

@@ -51,6 +51,8 @@ export default function Couriers() {
       toast({ title: "Courier removed", description: `${deleting.name} was deleted.` });
       setDeleting(null);
       await load();
+    } catch (err) {
+      toast({ title: "Could not delete courier", description: "Please try again.", variant: "destructive" });
     } finally {
       setBusy(false);
     }

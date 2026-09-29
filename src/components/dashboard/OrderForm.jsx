@@ -38,6 +38,19 @@ export default function OrderForm({ order, couriers, onSaved, onCancel }) {
     }
     setSaving(true);
     try {
+      if (!order) {
+        const existing = await orders.list();
+        const dup = existing.some(
+          (o) =>
+            String(o.order_number || "").trim().toLowerCase() ===
+            form.order_number.trim().toLowerCase()
+        );
+        if (dup) {
+          setError("This order number is already in use. Please use a different one.");
+          setSaving(false);
+          return;
+        }
+      }
       const payload = {
         ...form,
         amount: Number(form.amount) || 0,

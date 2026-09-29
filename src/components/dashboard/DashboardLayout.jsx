@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { LayoutDashboard, Package, Truck, Settings, Menu, X, Package2 } from "lucide-react";
 
@@ -54,6 +54,17 @@ function Logo() {
 export default function DashboardLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+
+  // Lock body scroll and close the drawer on Escape while the mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    const onKey = (e) => e.key === "Escape" && setMobileOpen(false);
+    if (mobileOpen) window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [mobileOpen]);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -118,7 +129,9 @@ export default function DashboardLayout() {
 
       <main className="lg:pl-64">
         <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
-          <Outlet key={location.pathname} />
+          <div key={location.pathname} className="float-in">
+            <Outlet />
+          </div>
         </div>
       </main>
     </div>

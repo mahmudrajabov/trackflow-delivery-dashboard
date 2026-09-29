@@ -192,6 +192,13 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
+              {orders.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-5 py-12 text-center text-sm text-slate-400">
+                    No orders yet — create one from the Orders page.
+                  </td>
+                </tr>
+              )}
               {orders.slice(0, 6).map((o) => (
                 <tr key={o.id} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
                   <td className="px-5 py-3.5 font-medium text-blue-600">{o.order_number}</td>
