@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { couriers as couriersStore } from "@/lib/mockDb";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -35,7 +35,7 @@ export default function Couriers() {
   const [busy, setBusy] = useState(false);
 
   const load = async () => {
-    setCouriers(await base44.entities.Courier.list("-created_date", 100));
+    setCouriers(await couriersStore.list("-created_date", 100));
   };
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function Couriers() {
   const doDelete = async () => {
     setBusy(true);
     try {
-      await base44.entities.Courier.delete(deleting.id);
+      await couriersStore.delete(deleting.id);
       toast({ title: "Courier removed", description: `${deleting.name} was deleted.` });
       setDeleting(null);
       await load();

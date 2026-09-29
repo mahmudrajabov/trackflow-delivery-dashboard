@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { orders } from "@/lib/mockDb";
 import { format, subDays } from "date-fns";
 import {
   AreaChart,
@@ -27,7 +27,7 @@ export default function Dashboard() {
   const [orders, setOrders] = useState(null);
 
   useEffect(() => {
-    base44.entities.Order.list("-created_date", 300).then(setOrders);
+    orders.list("-created_date", 300).then(setOrders);
   }, []);
 
   if (!orders) return <Spinner />;

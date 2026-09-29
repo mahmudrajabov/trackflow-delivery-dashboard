@@ -37,7 +37,17 @@ export const AuthProvider = ({ children }) => {
         setIsLoadingPublicSettings(false);
       } catch (appError) {
         console.error('App state check failed:', appError);
-        
+
+        // Outside the Base44 platform (exported app) the settings call has no
+        // backend — continue as a public app instead of blocking the UI.
+        if (!appParams.token) {
+          setAuthError(null);
+          setIsLoadingPublicSettings(false);
+          setIsLoadingAuth(false);
+          setAuthChecked(true);
+          return;
+        }
+
         // Handle app-level errors
         if (appError.status === 403 && appError.data?.extra_data?.reason) {
           const reason = appError.data.extra_data.reason;

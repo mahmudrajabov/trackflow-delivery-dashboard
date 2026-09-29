@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { orders } from "@/lib/mockDb";
 
 const STATUSES = ["pending", "in_transit", "delivered", "cancelled"];
 
@@ -43,12 +44,11 @@ export default function OrderForm({ order, couriers, onSaved, onCancel }) {
         customer_name: form.customer_name.trim(),
         address: form.address.trim(),
       };
-      const { base44 } = await import("@/api/base44Client");
       if (order) {
-        await base44.entities.Order.update(order.id, payload);
+        await orders.update(order.id, payload);
       } else {
         const today = new Date().toISOString().slice(0, 10);
-        await base44.entities.Order.create({ ...payload, order_date: today });
+        await orders.create({ ...payload, order_date: today });
       }
       onSaved();
     } catch (err) {

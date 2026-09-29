@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { orders, couriers as couriersStore } from "@/lib/mockDb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -44,8 +44,8 @@ export default function Orders() {
 
   const load = async () => {
     const [o, c] = await Promise.all([
-      base44.entities.Order.list("-created_date", 300),
-      base44.entities.Courier.list("-created_date", 50),
+      orders.list("-created_date", 300),
+      couriersStore.list("-created_date", 50),
     ]);
     setOrders(o);
     setCouriers(c);
@@ -69,7 +69,7 @@ export default function Orders() {
   const doDelete = async () => {
     setBusy(true);
     try {
-      await base44.entities.Order.delete(deleting.id);
+      await orders.delete(deleting.id);
       toast({ title: "Order deleted", description: `${deleting.order_number} was removed.` });
       setDeleting(null);
       await load();

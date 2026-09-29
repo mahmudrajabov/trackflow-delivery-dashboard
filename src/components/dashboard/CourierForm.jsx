@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { couriers as couriersStore } from "@/lib/mockDb";
 
 const STATUSES = ["available", "on_route", "off_duty"];
 
@@ -41,11 +42,10 @@ export default function CourierForm({ courier, onSaved, onCancel }) {
         deliveries: Number(form.deliveries) || 0,
         rating: Number(form.rating) || 5,
       };
-      const { base44 } = await import("@/api/base44Client");
       if (courier) {
-        await base44.entities.Courier.update(courier.id, payload);
+        await couriersStore.update(courier.id, payload);
       } else {
-        await base44.entities.Courier.create(payload);
+        await couriersStore.create(payload);
       }
       onSaved();
     } catch (err) {

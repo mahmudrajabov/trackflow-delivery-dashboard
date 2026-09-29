@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { orders, couriers as couriersStore } from "@/lib/mockDb";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -40,8 +40,8 @@ export default function OrderDetail() {
     const load = async () => {
       try {
         const [o, c] = await Promise.all([
-          base44.entities.Order.get(id),
-          base44.entities.Courier.list("-created_date", 50),
+          orders.get(id),
+          couriersStore.list("-created_date", 50),
         ]);
         setCouriers(c);
         if (!o) {
@@ -78,7 +78,7 @@ export default function OrderDetail() {
   }
 
   const changeStatus = async (value) => {
-    await base44.entities.Order.update(order.id, { status: value });
+    await orders.update(order.id, { status: value });
     setOrder((o) => ({ ...o, status: value }));
     toast({ title: "Status updated", description: `${order.order_number} → ${value.replace("_", " ")}` });
   };
@@ -86,7 +86,7 @@ export default function OrderDetail() {
   const doDelete = async () => {
     setBusy(true);
     try {
-      await base44.entities.Order.delete(order.id);
+      await orders.delete(order.id);
       toast({ title: "Order deleted" });
       navigate("/orders");
     } finally {
@@ -238,7 +238,7 @@ export default function OrderDetail() {
             onSaved={() => {
               setEditOpen(false);
               toast({ title: "Order updated" });
-              base44.entities.Order.get(id).then(setOrder);
+              orders.get(id).then(setOrder);
             }}
           />
         </DialogContent>
