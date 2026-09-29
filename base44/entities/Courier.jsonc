@@ -1,0 +1,39 @@
+{
+  "name": "Courier",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "vehicle": {
+      "type": "string"
+    },
+    "area": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "on_route",
+        "off_duty"
+      ],
+      "default": "available"
+    },
+    "deliveries": {
+      "type": "number",
+      "default": 0
+    },
+    "rating": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "name",
+    "phone",
+    "status"
+  ]
+}
