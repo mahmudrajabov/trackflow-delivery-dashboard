@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
-import { LayoutDashboard, Package, Truck, Settings, Menu, X, Package2 } from "lucide-react";
+import { NavLink, Outlet, useLocation, Link } from "react-router-dom";
+import { LayoutDashboard, Package, Truck, Settings, Menu, X } from "lucide-react";
+
+const EMBLEM_URL = "https://media.base44.com/images/public/6aba7dde19db9f4ae2999cdc/4dc2953fa_m-cat-emblem.svg";
+
+function Emblem({ className }) {
+  return <img src={EMBLEM_URL} alt="Mahmud Rajabov emblem" className={`${className} shrink-0 object-contain`} />;
+}
 
 const nav = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard, end: true },
@@ -39,15 +45,13 @@ function NavLinks({ onNavigate }) {
 
 function Logo() {
   return (
-    <div className="flex items-center gap-2.5 px-6 py-6">
-      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white">
-        <Package2 className="h-5 w-5" />
-      </span>
+    <Link to="/" className="flex items-center gap-2.5 px-6 py-6" aria-label="Back to home">
+      <Emblem className="h-8 w-8" />
       <div>
-        <p className="text-base font-semibold tracking-tight text-slate-900">TrackFlow</p>
-        <p className="text-xs text-slate-500">Delivery Dashboard</p>
+        <p className="text-base font-semibold tracking-tight text-slate-900">Mahmud Rajabov</p>
+        <p className="text-xs text-slate-500">TrackFlow · Delivery Dashboard</p>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -89,12 +93,10 @@ export default function DashboardLayout() {
 
       {/* Mobile topbar */}
       <header className="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
-            <Package2 className="h-4 w-4" />
-          </span>
-          <span className="text-base font-semibold tracking-tight text-slate-900">TrackFlow</span>
-        </div>
+        <Link to="/" className="flex items-center gap-2.5" aria-label="Back to home">
+          <Emblem className="h-7 w-7" />
+          <span className="text-base font-semibold tracking-tight text-slate-900">Mahmud Rajabov</span>
+        </Link>
         <button
           onClick={() => setMobileOpen(true)}
           className="rounded-lg p-2 text-slate-600 hover:bg-slate-100"
@@ -133,6 +135,12 @@ export default function DashboardLayout() {
             <Outlet />
           </div>
         </div>
+        <footer className="border-t border-slate-200">
+          <div className="mx-auto flex max-w-7xl items-center gap-2 px-4 py-4 sm:px-6 lg:px-8">
+            <Emblem className="h-6 w-6" />
+            <span className="text-sm text-slate-500">© {new Date().getFullYear()} Mahmud Rajabov · TrackFlow Delivery Dashboard</span>
+          </div>
+        </footer>
       </main>
     </div>
   );
